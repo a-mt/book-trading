@@ -116,7 +116,7 @@ var Book = {
                         } else {
                             $thumbnail.remove();
                         }
-                        if(!nb) {
+                        if(!$(opts.current).children('div:visible').length) {
                             $(opts.current).children('p.none').fadeIn();
                         }
                     });
