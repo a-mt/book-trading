@@ -1,5 +1,7 @@
 # Manage a Book Trading Club
 
+Demo on https://book-trading-46493.herokuapp.com/
+
 ## User Stories
 
 * As an unauthenticated user
