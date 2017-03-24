@@ -1,0 +1,36 @@
+div(class="thumbnail img" id="thumbnail"+item.id)
+    if item.thumbnail
+        img(src=item.thumbnail alt=item.title)
+    else
+        span(class="title") #{item.title}
+
+    if item.isMature
+        span(class="maturity pull-right") <img src="http://i.imgur.com/yajkTdn.png" alt="Mature">
+
+    div(class="hover")
+        a(class="left js-view" title="View details" href="#view")
+            span(class="glyphicon glyphicon-list-alt")
+
+        a(class="right js-trade"+(user ? '' : ' disabled') title="Request a trade" href=(user ? "#trade" : "/login") data-id=item.id)
+            span(class="glyphicon glyphicon-plus")
+
+        a(class="right js-untrade" title="Remove that request" href="#untrade" data-id=item.id)
+            span(class="glyphicon") &times;
+
+        if about
+            a(class="middle js-abouttrade" title="View that request" href="#handle" data-id=item.id)
+                span(class="glyphicon glyphicon-retweet")
+
+    div(class="details" style="display:none")
+        div(class="books")
+            include inc.item.pug
+            div(class="creator") Added by <a href="/profile/#{item._creator.username}">#{item._creator.username}</a>
+
+    if about
+        div(class="about" style="display:none")
+            div(class="books")
+                include inc.request.pug
+                if item.trade.status == 1 && item._creator == user.id
+                    div(class="creator btn-toolbar")
+                        span(class="btn btn-success js-accept" data-id=item.id) Accept
+                        span(class="btn btn-danger js-decline" data-id=item.id) Decline

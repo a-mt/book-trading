@@ -1,0 +1,36 @@
+div(class="list-group-item row")
+    div(class="col-130")
+        div(class="thumbnail img")
+            if item.thumbnail
+                img(src=item.thumbnail alt=item.title)
+            else
+                | &nbsp;
+
+            if item.isMature
+                span(class="maturity pull-right") <img src="http://i.imgur.com/yajkTdn.png" alt="Mature">
+
+    div(class="col-offset-130")
+        label(class="title") #{item.title} &nbsp;
+        small(class="subtitle") #{item.subtitle}
+        br
+        if item.authors
+            span(class="author") by #{item.authors} &nbsp;
+            br
+
+        hr
+        if item._creator.id
+            - var contact = item._creator
+            p has been accepted by
+        else
+            - var contact = item.trade._from
+            p has been requested by
+
+        div(class="well")
+            a(href="/profile/"+contact.username) #{contact.username} <br>
+            | Email: #{contact.email} <br>
+            if contact.fullname
+                | Name : #{contact.fullname} <br>
+            if contact.state
+                | State : #{contact.state} <br>
+            if contact.city
+                | City : #{contact.city} <br>

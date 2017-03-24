@@ -1,0 +1,83 @@
+extends layout
+
+block scripts
+    script(src="/public/js/book_list.js")
+    script.
+        $(document).ready(function(){
+            $('.nav-tabs a').click(function (e) {
+              e.preventDefault();
+              $(this).tab('show');
+            }); 
+        });
+
+block content
+    br
+    div(class="container")
+        if user
+            a(href="/book/new" class="pull-right") Your books
+        br
+        if !user
+            p(class="alert error") <a href="/login">Log in</a> to be able to trade
+        hr
+        h2 Trade books
+
+        <!-- Popup to view details -->
+        <div id="modal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <button type="button" class="close" data-dismiss="modal">&times;</button><br>
+              <div class="modal-body">
+                <p></p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Panels -->
+        ul(class="nav nav-tabs" role="tablist")
+            li(role="presentation" class="active")
+                a(href="#available" arial-controls="available") Available for a trade <small class="available count">#{books.length > 0 ? books.length : ''}</small>
+            li(role="presentation")
+                a(href="#yourrequests" arial-controls="yourrequests") Your requests <small class="yourrequests count">#{yourrequests.step1.length > 0 ? yourrequests.step1.length : ''}</small>
+            li(role="presentation")
+                a(href="#requestsforyou" arial-controls="requestsforyou") Requests for you <small class="requestsforyou count">#{requestsforyou.step1.length > 0 ? requestsforyou.step1.length : ''}</small>
+
+        div(class="tab-content")
+            div(role="tabpanel" class="tab-pane active" id="available")
+                p(class="none" style=(books.length > 0 ? 'display:none': '')) There are no books available
+
+                div(class="clearfix list")
+                    for item in books
+                        include book/inc.thumbnail.pug
+
+            div(role="tabpanel" class="tab-pane requests" id="yourrequests")
+                p(class="none" style=(yourrequests.length > 0 ? 'display:none': '')) You didn't make any requests
+                div(class="clearfix list" style=(yourrequests.step1.length == 0 ? 'display:none': ''))
+                    h3 Awaiting approval
+                    for item in yourrequests.step1
+                        include book/inc.thumbnail.pug
+
+                - var about = true
+                if yourrequests.step2.length > 0
+                    div(class="clearfix archive")
+                        h3 Approved
+                        for item in yourrequests.step2
+                            include book/inc.thumbnail.pug
+
+            div(role="tabpanel" class="tab-pane requests" id="requestsforyou")
+                p(class="none" style=(requestsforyou.length > 0 ? 'display:none': '')) There are no requests for you
+                div(class="clearfix list" style=(requestsforyou.step1.length == 0 ? 'display:none': ''))
+                    h3 Awaiting approval
+                    for item in requestsforyou.step1
+                        include book/inc.thumbnail.pug
+
+                div(class="clearfix archive" style=(requestsforyou.step2.length == 0 ? 'display:none': ''))
+                    h3 Approved
+                    for item in requestsforyou.step2
+                        include book/inc.thumbnail.pug

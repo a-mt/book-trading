@@ -1,0 +1,28 @@
+div(class="list-group-item row")
+    div(class="col-130")
+        div(class="thumbnail img")
+            if item.thumbnail
+                img(src=item.thumbnail alt=item.title)
+            else 
+                | &nbsp;
+
+            if item.isMature
+                span(class="maturity pull-right") <img src="http://i.imgur.com/yajkTdn.png" alt="Mature">
+
+    div(class="col-offset-130")
+        label(class="title") #{item.title} &nbsp;
+        small(class="subtitle") #{item.subtitle}
+        p #{item.category}
+    
+        div(class="details")
+            if item.authors
+                span(class="author") by #{item.authors} &nbsp;
+            br
+            if item.date
+                span(class="date") #{item.date} &nbsp;
+            if item.pageCount
+                span(class="pageCount") (#{item.pageCount} pages)
+
+            if item.link
+                hr
+                a(href=item.link) View details on Google Book

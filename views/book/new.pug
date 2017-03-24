@@ -1,0 +1,105 @@
+extends ../layout
+
+block scripts
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js" crossorigin="anonymous")
+    script(src="/public/js/book_autocomplete.js")
+
+block content
+
+    div(class="container")
+
+        for error in errors
+            p(class="alert error") #{error.message}
+        if data
+            script
+                | var data = !{JSON.stringify(data)};
+
+        h2(class="page-header") Add a book
+        form(method="post")
+            div(class="form-group")
+                label(for="search") Title
+                div(class="js-load")
+                    input(type="text" name="search" id="search" class="js-autocomplete-book form-control" value=(data.search ? data.search : '') placeholder="Type a title to lookup" autocomplete="off")
+                    img(src="http://i.imgur.com/nWp875t.gif" class="loader")
+
+            div(id="results" class="list-group")
+
+            br
+            input(type="submit" id="submit" class="btn" disabled title="Pick your book")
+
+        br
+        a(href="/book") List of your books
+
+    script(type="text/tpl" id="book-item-tpl")
+        div(class="list-group-item row books")
+            div(class="col-xs-1")
+                input(name="choice" value="{{id}}" type="radio" autocomplete="off" class="choose")
+
+            div(class="col-xs-2 img")
+                img(src="{{volumeInfo.imageLinks.thumbnail}}" alt="{{volumeInfo.title}}")
+
+            div(class="col-xs-9")
+                | {{#volumeInfo.mature}}
+                span(class="maturity pull-right") <img src="http://i.imgur.com/yajkTdn.png" alt="Mature">
+                | {{/volumeInfo.mature}}
+
+                label(class="title") {{volumeInfo.title}} &nbsp;
+                small(class="subtitle") {{volumeInfo.subtitle}}
+                p {{volumeInfo.categories}}
+
+                div(class="details")
+                    | {{#volumeInfo.authors}}
+                    span(class="author") by {{volumeInfo.authors}} &nbsp;
+                    | {{/volumeInfo.authors}}
+                    br
+                    | {{#volumeInfo.publishedDate}}
+                    span(class="date") {{volumeInfo.publishedDate}} &nbsp;
+                    | {{/volumeInfo.publishedDate}}
+
+                    | {{#volumeInfo.pageCount}}
+                    span(class="pageCount") ({{volumeInfo.pageCount}} pages)
+                    | {{/volumeInfo.pageCount}}
+
+                    hr
+                    a(href="{{volumeInfo.previewLink}}") View details on Google Book
+
+    script(type="text/tpl" id="book-custom-tpl")
+        div(class="list-group-item row books custom")
+            div(class="col-xs-1")
+                input(name="choice" value="custom" type="radio" autocomplete="off" class="choose")
+
+            div(class="col-xs-10")
+                label(class="example") Manual data entry
+
+                div(class="form-group")
+                    label(for="title") Title *
+                    input(type="text" name="title" class="form-control required" id="title" value="{{title}}")
+
+                div(class="form-group")
+                    label(for="subtitle") Subtitle
+                    input(type="text" name="subtitle" class="form-control" id="subtitle" value="{{subtitle}}")
+
+                div(class="form-group")
+                    label(for="authors") Author(s)
+                    input(type="text" name="authors" class="form-control required" id="authors" value="{{authors}}")
+
+                div(class="form-group")
+                    label(for="date") Publication date
+                    input(type="text" name="date" class="form-control" id="date" value="{{date}}")
+
+                div(class="form-group")
+                    label(for="category") Category
+                    input(type="text" name="category" class="form-control" id="category" value="{{category}}")
+
+                div(class="form-group")
+                    label Mature content ?
+                    label(class="radio-inline")
+                        input(type="radio" name="isMature" value="0" checked)
+                        | No
+                    label(class="radio-inline")
+                        <input type="radio" name="isMature" value="1"{{#isMature}} checked{{/isMature}}>
+                        | Yes
+
+                div(class="form-group")
+                    label(for="pageCount") Page count
+                    input(type="text" name="pageCount" class="form-control" id="pageCount" value="{{pageCount}}")

@@ -1,0 +1,60 @@
+extends ../layout.pug
+
+block content
+
+  div(class="jumbotron")
+    div(class="container")
+
+        p Username: #{user.username}
+        if user.provider != 'local'
+            p Logged in via #{user.provider}
+
+  div(class="container")
+    if success
+      p(class="alert success") #{success}
+    
+    h2(class="page-header") Change my details
+    p(class="alert info") These informations are visible to other users
+    form(method="post")
+        div(class="form-group")
+            label(for="email") Email
+            input(type="text" name="email" id="email" class="form-control" required value=(data.email ? data.email : user.email))
+            if errors.email
+                p(class="error") #{errors.email.message}
+    
+        div(class="form-group")
+            label(for="fullname") Full name
+            input(type="text" name="fullname" id="fullname" class="form-control" required value=(data.fullname ? data.fullname : user.fullname))
+            if errors.fullname
+                p(class="error") #{errors.fullname.message}
+    
+        div(class="form-group")
+            label(for="city") City
+            input(type="text" name="city" id="city" class="form-control" required value=(data.city ? data.city : user.city))
+            if errors.city
+                p(class="error") #{errors.city.message}
+    
+        div(class="form-group")
+            label(for="state") State
+            input(type="text" name="state" id="state" class="form-control" required value=(data.state ? data.state : user.state))
+            if errors.state
+                p(class="error") #{errors.state.message}
+    
+        input(type="submit" class="btn btn-default" name="submitDetails")
+    
+    if user.username != 'alice' && user.username != 'bob'
+        h2(class="page-header") Change password
+        form(method="post")
+            div(class="form-group")
+                label(for="password") Current password
+                input(type="password" name="password" id="password" class="form-control" required value=(data.password ? data.password : ''))
+                if errors.password
+                    p(class="error") #{errors.password.message}
+        
+            div(class="form-group")
+                label(for="newpassword") New Password
+                input(type="password" name="newpassword" id="newpassword" class="form-control" required value=(data.newpassword ? data.newpassword : ''))
+                if errors.newpassword
+                    p(class="error") #{errors.newpassword.message}
+        
+            input(type="submit" class="btn btn-default" name="submitPassword")

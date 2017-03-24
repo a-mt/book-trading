@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+
+    div(class="container")
+        if success
+          p(class="alert success") #{success}
+
+        h2(class="page-header") Edit book
+        form(method="post")
+            div(class="form-group")
+                label(for="name") Name
+                p(id="name") #{item.name}
+
+            div(class="form-group")
+                label(for="description") Description
+                textarea(name="description" id="description" class="form-control" required)
+                    | #{(data.description ? data.description : item.description)}
+                if errors.description
+                    p(class="error") #{errors.description.message}
+
+            input(type="submit" class="btn btn-default")
+            input(type="submit" name="delete" value="Delete" class="btn btn-danger" onclick="if(!confirm('Are you sure ?')) { return false; }")
+
+        br
+        a(href="/book") Back to the list

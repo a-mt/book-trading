@@ -1,0 +1,24 @@
+extends ../layout
+
+block scripts
+    script(src="/public/js/book_list.js")
+
+block content
+
+    div(class="container")
+        if success
+          p(class="alert success") #{success}
+        if error
+          p(class="alert error") #{error}
+
+        a(href="/book/new" class="pull-right") Add a new book
+        h2(class="page-header") My books (#{docs.length})
+        
+        if docs.length > 0
+            div(class="list-group books")
+                for item in docs
+                    include inc.item.pug
+
+                        span(class="right-fixed btn btn-danger js-delete" data-id=item.id) Delete
+        else
+            p There are no books yet
