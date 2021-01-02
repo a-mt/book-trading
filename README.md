@@ -1,6 +1,25 @@
 # Manage a Book Trading Club
 
-Demo on https://book-trading-46493.herokuapp.com/
+## Install
+
+* Install dependencies
+
+    ```
+    npm install
+    ```
+
+* Create .env
+
+    ```
+    GOOGLE_BOOK_KEY=""
+    MONGO_URI="mongodb://"
+    ```
+
+* Run
+
+    ```
+    npm run start
+    ```
 
 ## User Stories
 
